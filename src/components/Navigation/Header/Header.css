@@ -1,0 +1,14 @@
+  .header {
+    background-color: #368cba;
+    margin: 10px 10px;
+    padding: 0px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1.5px solid #1f516b;
+    border-radius: 10px;
+  }
+
+  .header p {
+    color: white;
+  }

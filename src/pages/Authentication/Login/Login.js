@@ -37,8 +37,6 @@ class Login extends Component {
           alert('Please fill in all fields');
           return;
         }
-        // Here you would typically call an API or handle login logic
-        console.log('Login attempt with:', this.state.formData);
       }
     
       render() {

@@ -1,0 +1,25 @@
+.left-menu a {
+    text-decoration: none;
+    color: white;
+    display: block;
+    padding-bottom: 15px;
+  }
+  
+  .left-menu a.active-link {
+    color: burlywood;
+  }  
+
+  .left-menu {
+    text-align: left; 
+    margin-left: 10px;
+    margin-right: auto;
+    background-color: #368cba;
+    color: white;
+    padding: 10px 10px;
+    width: 100px;
+    height: 100%;
+    border: 1.5px solid #1f516b;
+    position: fixed;
+    z-index: 1;
+    overflow-x: hidden;
+  }

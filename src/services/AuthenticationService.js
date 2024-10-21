@@ -1,7 +1,7 @@
 import api from './Api';
 
-export const login = (username, password) => {
-    let user = api.get( '/user.json?username=' + username + '&password=' + password)
+export const login = async (username, password) => {
+    let user = await api.get( '/user.json?username=' + username + '&password=' + password)
         .then( response => {
             return(response.data);
         } )
@@ -11,12 +11,18 @@ export const login = (username, password) => {
     if (user) {
         localStorage.setItem('user id', user.id);
         localStorage.setItem('username', user.username);
-        localStorage.setItem('user email', user.email);
     }
 };
 
-export const logout = () => {
+export const isLogin = async () => {
+    return localStorage.getItem('user id') !== null;
+}
+
+export const getUsernameFromSession = async () => {
+    return localStorage.getItem('username');
+}
+
+export const logout = async () => {
     localStorage.removeItem('user id');
     localStorage.removeItem('username');
-    localStorage.removeItem('useremail');
 };

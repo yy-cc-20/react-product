@@ -1,0 +1,28 @@
+.product table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; 
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.5em; 
+  max-height: 4em; 
+  border: none;
+}
+
+.product th, .product td {
+  padding: 8px 10px;
+  text-align: left;
+
+}
+
+.border-top-down-highlight {
+  border-bottom: 2px solid #368cba;
+  border-top: 2px solid #368cba;
+  font-weight: bold;
+  color: #368cba;
+}

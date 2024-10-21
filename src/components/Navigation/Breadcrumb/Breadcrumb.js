@@ -7,7 +7,6 @@ function Breadcrumb() {
     let breadcrumb = '';
     const pathname = useLocation().pathname;
 
-    console.log(pathname)
     if (pathname === "/Dashboard")
         breadcrumb = "Dashboard"
     
@@ -20,7 +19,7 @@ function Breadcrumb() {
     else if (pathname === "/Profile")
         breadcrumb = "Profile"
 
-    else if (pathname === "/changePswd")
+    else if (pathname === "/changepswd")
         breadcrumb = "Profile/Change Password"
 
     else if (pathname === "/Product")

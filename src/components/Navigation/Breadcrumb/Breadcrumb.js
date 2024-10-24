@@ -13,7 +13,7 @@ function Breadcrumb() {
     else if (pathname === "/SignIn")
         breadcrumb = "Sign-In"
 
-    else if (pathname === "/fgtpwsd")
+    else if (pathname === "/fgtpswd")
         breadcrumb = "Forget Password"
 
     else if (pathname === "/Profile")

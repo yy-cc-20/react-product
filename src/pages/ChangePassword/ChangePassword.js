@@ -1,51 +1,76 @@
-// import React from 'react';
-// import ProtectedPageLayout from '../../components/UI/ProtectedPageLayout/ProtectedPageLayout';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
-// function ChangePassword() { 
-//     return (
-//         <ProtectedPageLayout>
-//             <div class="sign-in-container">
-//   <form [formGroup]="changePasswordForm" (ngSubmit)="onSubmit()">
-//     <p>Change Password</p>
-//     <hr />
-//     <div class="form-group">
-//       <label>Current Password</label><br />
-//       <input type="text" formControlName="currentPassword" placeholder="Please enter current password" class="form-control" />
-//       <div *ngIf="changePasswordForm.controls.currentPassword.invalid && changePasswordForm.controls.currentPassword.touched" class="error">
-//         Current password is required
-//       </div>
-//     </div>
+import React, { Component } from 'react';
 
-//     <div class="form-group">
-//       <label>New Password</label><br />
-//       <input type="password" formControlName="newPassword" placeholder="Please enter new password" class="form-control" />
-//       <div *ngIf="changePasswordForm.controls.newPassword.invalid && changePasswordForm.controls.newPassword.touched" class="error">
-//         New password is required
-//       </div>
-//     </div>
+import './ChangePassword.css';
 
-//     <div class="form-group">
-//       <label>Confirm New Password</label><br />
-//       <input type="password" formControlName="confirmNewPassword" placeholder="Please enter confirm new password" class="form-control" />
-//       <div *ngIf="changePasswordForm.controls.confirmNewPassword.invalid && changePasswordForm.controls.confirmNewPassword.touched" class="error">
-//         Confirm new password is required
-//       </div>
-//       <div *ngIf="!passwordIsMatch() && changePasswordForm.controls.confirmNewPassword.touched" class="error">
-//         New password is not match
-//       </div>
-//       <div *ngIf="this.error !== '' && changePasswordForm.controls.newPassword.touched && changePasswordForm.controls.confirmNewPassword.touched" class="error">
-//         {{ this.error }}
-//       </div>
-//     </div>
-//     <hr />
-//     <div style="display: flex; justify-content: space-between;">
-//       <button type="submit" class="btn btn-primary">Submit</button>
-//     </div>
-//   </form>
-//   </div>
+class ChangePassword extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          controls: {
+              currentPassword: '',
+              newPassword: '',  
+              confirmNewPassword: '',
+          }
+      };
+    }
 
-//         </ProtectedPageLayout>
-//     );
-// }
+    validationSchema = () => Yup.object({
+        currentPassword: Yup.string()
+        .required('Password is required.'),
+        
+        newPassword: Yup.string()
+        .required('New password is required.'),
+        
+        confirmNewPassword: Yup.string()
+        .oneOf([Yup.ref('newPassword'), null], 'Passwords must match.')
+        .required('Confirm new password is required.'),
+    });
 
-// export default ChangePassword;
+    onSubmit = (values, { setSubmitting, resetForm }) => {
+      setSubmitting(true);
+      alert("Password has been changed.");
+      resetForm();
+  };
+
+    render() {
+      return (
+        <div className="change-password-container">
+            <Formik initialValues={this.state.controls} validationSchema={this.validationSchema} onSubmit={this.onSubmit} >
+              {({ isSubmitting }) => (
+                <Form>
+                    <p>Change Password</p>
+                    <hr />
+
+                  <div className="form-group">
+                    <label>Current Password</label><br />
+                      <Field type="password" name="currentPassword" placeholder="Please enter current password" className="form-control" />
+                    <ErrorMessage name="currentPassword" component="div" className='error-message' />
+                  </div>
+
+                  <div className="form-group">
+                    <label>New Password</label><br />
+                      <Field type="password" name="newPassword" placeholder="Please enter new password" className="form-control" />
+                    <ErrorMessage name="newPassword" component="div" className='error-message' />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Confirm New Password</label><br />
+                      <Field type="password" name="confirmNewPassword" placeholder="Please enter confirm new password" className="form-control" />
+                    <ErrorMessage name="confirmNewPassword" component="div" className='error-message' />
+                  </div>
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <button type="submit" disabled={isSubmitting} className="btn btn-primary">Submit</button>
+                  </div>
+                </Form>
+                )}
+            </Formik>
+          </div>
+      );
+  }
+}
+
+export default ChangePassword;

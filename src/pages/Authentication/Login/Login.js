@@ -1,88 +1,82 @@
-import React, { Component } from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { useAuth } from '../../../services/AuthProvider';
 import './Login.css';
 
-class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          formData: {
-            username: '',
-            password: '',
-          },
-          errors: {
-            username: '',
-            password: '',
-          }
-        };
-      }
-    
-      handleChange = (e) => {
-        const { name, value } = e.target;
-        this.setState(prevState => ({
-          formData: {
-            ...prevState.formData,
-            [name]: value,
-          },
-          errors: {
-            ...prevState.errors,
-            [name]: value ? '' : `${name.charAt(0).toUpperCase() + name.slice(1)} is required`,
-          }
-        }));
-      }
-    
-      handleSubmit = (e) => {
-        e.preventDefault();
-        if (!this.state.formData.username || !this.state.formData.password) {
-          alert('Please fill in all fields');
-          return;
-        }
-      }
-    
-      render() {
-        return (
-          <div className="sign-in-container">
-            <form onSubmit={this.handleSubmit}>
+function Login() {
+  const { login, user } = useAuth();
+  const navigate = useNavigate();
+
+  if (user !== null)
+    navigate('/Profile');
+  
+  const [input, setInput] = useState({
+    username: '',
+    password: ''
+  });
+
+  const validationSchema = () => Yup.object({
+    username: Yup.string()
+      .required('Username is required.'),
+    password: Yup.string()
+      .required('Password is required.'),
+  });
+
+  const handleLogin = async () => {
+    try {
+      let userInfo = {
+        id: '81dc9bdb-52d4-4dbd-96d4-3b58eeda440a',
+        username: 'tester'
+      };
+      await login(userInfo);
+      navigate('/Profile');
+    } catch (error) {
+      console.error('Error login:', error);
+    }
+  };
+  
+  const onSubmit = (values, { setSubmitting, resetForm }) => {
+      setInput(values);
+      setSubmitting(true);
+      handleLogin();
+  };
+
+  return (
+    <div className="sign-in-container">
+        <Formik initialValues={input} validationSchema={validationSchema} onSubmit={onSubmit} >
+          {({ isSubmitting }) => (
+            <Form>
               <p>Sign in to start your session</p>
-    
+
               <div className="form-group">
                 <div className="input-with-icon">
-                  <input 
-                    type="text" 
-                    name="username" 
-                    placeholder="UserName" 
-                    value={this.state.formData.username} 
-                    onChange={this.handleChange} 
-                    className={`form-control ${this.state.errors.username && 'error'}`}
-                  />
+                  <Field type="text" name="username" placeholder="UserName" className="form-control" />
                   <i className="fas fa-envelope"></i>
                 </div>
-                {this.state.errors.username && <div className="error">{this.state.errors.username}</div>}
+                <ErrorMessage name="username" component="div" className='error-message' />
               </div>
-    
+
               <div className="form-group">
                 <div className="input-with-icon">
-                  <input 
-                    type="password" 
-                    name="password" 
-                    placeholder="Password" 
-                    value={this.state.formData.password} 
-                    onChange={this.handleChange} 
-                    className={`form-control ${this.state.errors.password && 'error'}`}
-                  />
+                  <Field type="text" name="password" placeholder="Password" className="form-control" />
                   <i className="fas fa-lock"></i>
                 </div>
-                {this.state.errors.password && <div className="error">{this.state.errors.password}</div>}
+                <ErrorMessage name="password" component="div" className='error-message' />
               </div>
-    
+
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <a href="/forget-password" className="forgot-password">I forgot my password</a>
-                <button type="submit" className="btn btn-primary">Sign In</button>
+                <a href="/fgtpswd" className="forgot-password">I forgot my password</a>
+                <button type="submit" disabled={isSubmitting} className="btn btn-primary">Sign In</button>
               </div>
-            </form>
-          </div>
-        );
-    }
+            </Form>
+            )}
+        </Formik>
+      </div>
+  );
 }
 
 export default Login;

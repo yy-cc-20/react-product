@@ -1,48 +1,44 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
+
+import { useAuth } from '../../../services/AuthProvider';
 
 import './Header.css';
 
-class Header extends Component {   
-    constructor(props) {
-        super(props);
-        this.state = {
-            currentTime: this.formatDate(new Date()),
-        };
-    }
-
-    componentDidMount() {
-        this.timer = setInterval(() => {
-            this.setState({
-                currentTime: this.formatDate(new Date()),
-            });
-        }, 1000);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.timer);
-    }
-
-    formatDate = (date) => {
+function Header() {   
+    const formatDate = (date) => {
         return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-    }
+    }   
 
-    render() {
-        return (
-            <nav className="header">
-                <div style={{ marginBottom: '40px' }}>
-                    <p>{this.props.isLogin ? `Hello ${this.props.username}` : ''}</p>
-                </div>
+    const [currentTime, setCurrentTime] = useState(null)
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentTime(formatDate(new Date()))
+          }, 1000);
+        
+          return () => clearInterval(timer);
+    });
     
-                <div style={{ textAlign: 'right'}}>
-                    <p>Time: {this.state.currentTime}</p>
+    const { user, logout } = useAuth();
 
-                    <a href={this.props.isLogin ? '/Logout' : '/SignIn'} style={{textDecoration: 'none'}}>
-                        <p style={{ textAlign: 'right' }}>{this.props.isLogin ? 'Logout' : 'Login'}</p>
-                    </a>
-                </div>
-            </nav>
-        );
-    };
+    return (
+        <nav className="header">
+            <div style={{ marginBottom: '40px' }}>
+                <p>{user ? `Hello ${user.username}` : ''}</p>
+            </div>
+
+            <div style={{ textAlign: 'right'}}>
+                <p>Time: {currentTime}</p>
+
+                {user
+                    ? <p style={{ textAlign: 'right' }} onClick={logout}>Logout</p> 
+                    : <a href='/SignIn' style={{textDecoration: 'none'}}>
+                            <p style={{ textAlign: 'right' }}>Login</p>
+                        </a>}
+                
+            </div>
+        </nav>
+    );
 }
 
 export default Header;

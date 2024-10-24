@@ -1,4 +1,4 @@
-# Angular-Test
+# react-product-web
 
 ## Table of Contents
 - [Features](#features)

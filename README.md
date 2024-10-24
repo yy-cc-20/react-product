@@ -28,10 +28,10 @@ npm start
 - Website URL: `http://localhost:3000`
 
 ## Effort
-protected route
-reusable component
-input validation library
-auth context
+- protected route
+- reusable component
+- input validation library
+- auth context
 
 ## Future Improvement
 - Hash the password in database
